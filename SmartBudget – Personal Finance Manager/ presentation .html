@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartBudget – 10-Slide Narrated Presentation</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Plus Jakarta Sans", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      padding: 14px 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      background: #020617;
+    }
+    .brand { font-size: 16px; font-weight: 700; }
+    .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    button, select {
+      background: #1e293b;
+      color: #f8fafc;
+      border: 1px solid #334155;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button.primary { background: #0f766e; border-color: #0f766e; }
+    button.primary:hover { background: #0d9488; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .stage {
+      flex: 1;
+      max-width: 1080px;
+      width: 100%;
+      margin: 24px auto;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .slide-card {
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    }
+    .slide-head {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 26px 34px;
+      border-bottom: 3px solid #0f766e;
+    }
+    .slide-meta {
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      color: #5eead4;
+      margin-bottom: 6px;
+    }
+    .slide-title { font-size: 26px; font-weight: 800; margin: 0; line-height: 1.2; }
+    .slide-sub { font-size: 14px; color: #cbd5e1; margin: 6px 0 0; }
+    .slide-body { padding: 28px 34px; display: grid; gap: 18px; }
+    .bullets { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+    .bullets li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 16px;
+      line-height: 1.45;
+      color: #1e293b;
+    }
+    .num {
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      font-weight: 700;
+      background: #f0fdfa;
+      color: #0f766e;
+      border: 1px solid #99f6e4;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .vis-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .vis-title {
+      font-family: ui-monospace, monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: #0f766e;
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+    }
+    .mini-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .mini-kpis div { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; }
+    .mini-kpis span { display: block; font-size: 10px; color: #64748b; font-weight: 700; }
+    .mini-kpis strong { font-size: 16px; font-family: ui-monospace, monospace; color: #0f172a; }
+    .vis-grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .vis-grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .vis-pill { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; }
+    .vis-pill strong { display: block; font-size: 13px; color: #0f172a; }
+    .vis-pill span { font-size: 12px; color: #475569; }
+    .vis-rows { display: grid; gap: 6px; }
+    .vis-rows div { display: flex; justify-content: space-between; background: #fff; border: 1px solid #e2e8f0; border-radius: 7px; padding: 7px 12px; font-size: 12px; }
+    .vis-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #0f172a; }
+    .vis-flow span { background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 6px 10px; }
+    .narration-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.55;
+    }
+    .footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .dots { display: flex; gap: 6px; flex-wrap: wrap; }
+    .dots button {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+    }
+    .dots button.active { background: #0f766e; border-color: #0f766e; color: #fff; }
+    audio { width: 100%; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">SmartBudget – Narrated 10-Slide Presentation</div>
+    <div class="controls">
+      <button class="primary" id="btn-play-all" onclick="togglePlayAll()">Play Full Voiceover (All 10 Slides)</button>
+      <button onclick="speakCurrentSlide()">Play Current Slide Voice</button>
+      <button onclick="stopSpeech()">Stop Voice</button>
+      <select id="voice-rate" onchange="currentRate = Number(this.value)">
+        <option value="0.9">0.9x Speed</option>
+        <option value="1" selected>1.0x Normal</option>
+        <option value="1.15">1.15x Crisp</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="stage">
+    
+    <article class="slide-card" id="slide-container"></article>
+    <div class="footer-bar">
+      <button id="btn-prev" onclick="goSlide(idx - 1)">Previous</button>
+      <div class="dots" id="slide-dots"></div>
+      <button id="btn-next" onclick="goSlide(idx + 1)">Next</button>
+    </div>
+  </main>
+
+  <script>
+    const SLIDES = [{"slideNumber":1,"title":"SmartBudget – Personal Finance Manager","subtitle":"Privacy-First, Zero-API Single-HTML Budgeting with Local RAG Guidance","bullets":["Generative AI Midterm Project | Individual Submission","Topic: Personal Finance Tracking & Offline AI-Assisted Onboarding","100% Client-Side Execution in One Portable HTML File","Course Instructor: Syed Mahmood Ejaz"],"visualNote":"Clean title banner with SmartBudget dashboard preview and key project tagline.","timeRange":"0:00 – 0:20","narration":"Hello everyone. Today I am presenting SmartBudget, a privacy-first personal finance manager built as a single self-contained HTML application for our Generative AI midterm. SmartBudget helps users track income, enforce monthly budgets, and get instant answers from an offline built-in assistant—all without external APIs or cloud accounts.","startSeconds":0},{"slideNumber":2,"title":"The Problem & Target Users","subtitle":"Why Existing Finance Apps Fail Everyday Students & Freelancers","bullets":["Subscription Fatigue: Leading tools like YNAB cost $109/year.","Privacy Exposure: Cloud apps demand sensitive bank credentials or serve ads.","Regional Gaps: Automated bank sync frequently breaks outside North America.","Target Users: University students, freelancers, and privacy-focused households."],"visualNote":"Three pain-point columns (Cost, Privacy Risk, Connectivity) paired with user personas.","timeRange":"0:20 – 0:42","narration":"Most popular budgeting apps fail everyday students and freelancers for three reasons. First, subscription fees exceed a hundred dollars a year. Second, they force users to hand over bank logins or endure targeted credit-card ads. Third, automated bank syncing rarely supports local banks. SmartBudget solves this for students, freelancers, and privacy-conscious households.","startSeconds":20},{"slideNumber":3,"title":"Competitor Research & Differentiation","subtitle":"How SmartBudget Compares Against Five Market Leaders","bullets":["Studied: YNAB, Credit Karma (Mint), PocketGuard, Goodbudget, Spendee.","Gap Found: None combine zero cost, offline single-file ownership, and built-in Q&A.","SmartBudget Advantage: Zero subscriptions, zero tracking, instant CSV export.","Data Sovereignty: 100% localStorage persistence on the user’s own device."],"visualNote":"Compact 5-row competitor comparison matrix highlighting Cost, Privacy, and Offline Support.","timeRange":"0:42 – 1:05","narration":"During research, I evaluated five established competitors: YNAB, Credit Karma Mint, PocketGuard, Goodbudget, and Spendee. While each offers clean charts or cloud sync, every one relies on paid tiers, ad monetization, or remote servers. SmartBudget fills that gap by delivering complete expense management, CSV backups, and local Q&A in one free offline HTML file.","startSeconds":42},{"slideNumber":4,"title":"The Solution: Single-HTML Finance Workspace","subtitle":"Four Core Modules Running Offline in Any Browser","bullets":["Overview Dashboard: Live Net Balance, Income, Expenses, and Savings Rate.","Transactions Ledger: Instant add, edit, delete, search, filter, and CSV export.","Budgets & Goals: 8 category caps with explicit status labels + savings buckets.","Zero External Dependencies: Opens directly from disk or Google Drive download."],"visualNote":"Annotated UI screenshot of SmartBudget Dashboard KPI strip, SVG charts, and ledger.","timeRange":"1:05 – 1:28","narration":"Let us look at the solution. SmartBudget packages four cohesive modules inside one portable HTML file. The Overview Dashboard calculates net balance, savings rate, and cashflow trends using crisp SVG charts. The Transactions Ledger enables fast filtering and CSV export, while Budgets and Goals track monthly category limits with clear Within Limit, Approaching Cap, and Over Budget alerts.","startSeconds":65},{"slideNumber":5,"title":"Structured Knowledge Base Prompt","subtitle":"Engineering Grounded Documentation Using the 5-Part Framework","bullets":["Designed strictly with Role, Context, Task, Constraints, and Format.","Explicitly requested clean Markdown (.md) with numbered H2 sections.","Covered 6 areas: Purpose, Users, Usage, Architecture, FAQs, and Limits.","Strict Boundary Rule: Documented what SmartBudget cannot do to prevent hallucinations."],"visualNote":"Visual breakdown diagram showing Role -> Context -> Task -> Constraints -> Format.","timeRange":"1:28 – 1:50","narration":"To power the built-in assistant, I engineered a structured Knowledge Base prompt using all five required components: Role, Context, Task, Constraints, and Format. The prompt instructed the model to output a clean Markdown manual covering product usage, local storage mechanics, FAQs, and explicit technical limits so the assistant stays strictly factual.","startSeconds":88},{"slideNumber":6,"title":"Local Client-Side RAG Architecture","subtitle":"Zero-API Retrieval-Augmented Generation Inside the Same HTML File","bullets":["Step 1: Markdown KB split into semantic chunks by section headings.","Step 2: User queries normalized with stopword removal & synonym expansion.","Step 3: Hybrid BM25 + TF-IDF scoring ranks relevant documentation chunks.","Step 4: Confidence gate cites matched section OR refuses out-of-scope queries."],"visualNote":"4-step horizontal pipeline diagram: Markdown KB -> Chunker -> BM25 Scorer -> Grounded Output.","timeRange":"1:50 – 2:14","narration":"Because project rules forbid external AI APIs or agents, I built a deterministic local RAG engine directly in JavaScript inside the same HTML file. When a user asks a question, the engine chunks the Markdown knowledge base, expands domain terms, and scores relevance using BM25 and TF-IDF. If confidence passes the threshold, it answers with section citations; otherwise, it safely declines.","startSeconds":110},{"slideNumber":7,"title":"RAG Verification: Known vs. Unknown Queries","subtitle":"Live Evidence of Grounded Retrieval and Honest Refusal","bullets":["Test 1 (Known): \"How does SmartBudget work and where is my financial data stored?\"","Result 1: Accurately explains browser localStorage and cites Section 5 FAQ.","Test 2 (Unknown): \"What is today’s USD to PKR exchange rate and current Bitcoin price?\"","Result 2: Honest refusal stating zero APIs and no live exchange rates or crypto prices."],"visualNote":"Side-by-side real screenshots of Screenshot 1 (Known Question) and Screenshot 2 (Unknown Refusal).","timeRange":"2:14 – 2:38","narration":"Testing verified both sides of the retrieval boundary inside SmartBudget HTML. When asked where financial data is stored, the assistant explains browser localStorage and cites section five. When asked for today’s USD to PKR exchange rate and current Bitcoin price, the bot honestly declines and states it runs offline without external APIs.","startSeconds":134},{"slideNumber":8,"title":"AI Usage Log & Prompt Engineering Workflow","subtitle":"Transparent Use of Free AI Tools Across Every Project Stage","bullets":["ChatGPT (Free): Topic framing, competitor synthesis, and 5-part prompts.","Claude (Free): Single-HTML layout, SVG charts, and local BM25 RAG logic.","Gemini (Free): Markdown Knowledge Base drafting and 4-page proposal editing.","QuillBot & Speech Audio (Free): Grammar review and 3.5-minute presentation voice."],"visualNote":"Summary table mapping Free AI Tools to Deliverables 1 through 7.","timeRange":"2:38 – 2:58","narration":"Every deliverable was built transparently using free tools alongside structured prompt engineering. ChatGPT assisted with competitor analysis and prompt design, Claude helped architect the single-HTML dashboard and local RAG logic, Gemini refined the Markdown documentation and proposal, and QuillBot plus free speech synthesis supported final editing and narration.","startSeconds":158},{"slideNumber":9,"title":"Business Impact & Monetization Model","subtitle":"How SmartBudget Helps Users and Scales Sustainably","bullets":["Free Core Forever: Open single-HTML personal edition maximizes financial literacy.","Zero-Ad Ethics: Never sells transaction histories or pushes predatory credit.","Revenue Path 1: Pro Template Packs (tax prep, freelance invoicing, multi-ledger).","Revenue Path 2: White-label licensing for universities and student workshops."],"visualNote":"Two-tier sustainability chart: Free Individual Core + Institutional & Pro Add-On Value.","timeRange":"2:58 – 3:18","narration":"From a business perspective, SmartBudget keeps its core tracker free forever to empower students and freelancers without financial barriers. Sustainable revenue comes ethically through optional offline Pro template packs for freelancers, plus white-label institutional licensing for universities teaching financial literacy—without ever displaying ads or monetizing private data.","startSeconds":178},{"slideNumber":10,"title":"Conclusion & Live Demonstration","subtitle":"Delivering Privacy, Portability, and Grounded Intelligence","bullets":["All 7 Deliverables Completed & Cross-Checked Against Rubric Rules.","100% Offline Single-HTML Tool with Embedded Local RAG Assistant.","3–5 Page Business Proposal, AI Usage Log, and Narrated Deck Ready.","Transitioning now to Live Demo & Instructor Q&A."],"visualNote":"Final summary card with QR/Drive checklist badge and \"Thank You — Questions?\" footer.","timeRange":"3:18 – 3:30","narration":"In summary, SmartBudget demonstrates that useful Generative AI workflows do not have to sacrifice privacy or require expensive cloud APIs. By combining structured prompt engineering with a single-HTML application and local RAG retrieval, the tool stays fast, free, and trustworthy. Thank you—I will now walk through the live application.","startSeconds":198}];
+    let idx = 0;
+    let playingAll = false;
+    let currentRate = 1;
+
+    
+    function getSlideVisualHtml(n) {
+      if (n === 1) {
+        return '<div class="vis-box">' +
+          '<div class="vis-title">SINGLE-FILE PRIVACY SNAPSHOT</div>' +
+          '<div class="mini-kpis">' +
+            '<div><span>NET BALANCE</span><strong>PKR 104,500</strong></div>' +
+            '<div><span>SAVINGS RATE</span><strong style="color:#0f766e">35%</strong></div>' +
+            '<div><span>EXTERNAL APIS</span><strong style="color:#0f766e">0 (Offline)</strong></div>' +
+          '</div></div>';
+      }
+      if (n === 2) {
+        return '<div class="vis-box">' +
+          '<div class="vis-title">3 CORE USER BARRIERS</div>' +
+          '<div class="vis-grid3">' +
+            '<div class="vis-pill"><strong>$109 / yr</strong><span>Paywall Barrier</span></div>' +
+            '<div class="vis-pill"><strong>Bank Logins</strong><span>Privacy Exposure</span></div>' +
+            '<div class="vis-pill"><strong>Cloud Sync</strong><span>Fails Offline</span></div>' +
+          '</div></div>';
+      }
+      if (n === 3) {
+        return '<div class="vis-box">' +
+          '<div class="vis-title">COMPETITOR BENCHMARK MATRIX</div>' +
+          '<div class="vis-rows">' +
+            '<div><span>YNAB / PocketGuard / Spendee</span><strong style="color:#b91c1c">Paid Tiers + Cloud</strong></div>' +
+            '<div><span>Credit Karma (Mint)</span><strong style="color:#b45309">Referral Ads</strong></div>' +
+            '<div><span>SmartBudget (Ours)</span><strong style="color:#0f766e">Free · Offline · Local RAG</strong></div>' +
+          '</div></div>';
+      }
+      if (n === 4) {
+        return '<div class="vis-box">' +
+          '<div class="vis-title">CASHFLOW SVG CHART + 4 MODULES</div>' +
+          '<svg viewBox="0 0 360 110" style="width:100%;height:auto;display:block">' +
+            '<rect x="28" y="25" width="22" height="65" rx="3" fill="#0f766e"/><rect x="54" y="50" width="22" height="40" rx="3" fill="#dc2626" opacity="0.8"/>' +
+            '<rect x="128" y="15" width="22" height="75" rx="3" fill="#0f766e"/><rect x="154" y="45" width="22" height="45" rx="3" fill="#dc2626" opacity="0.8"/>' +
+            '<rect x="228" y="10" width="22" height="80" rx="3" fill="#0f766e"/><rect x="254" y="38" width="22" height="52" rx="3" fill="#dc2626" opacity="0.8"/>' +
+            '<line x1="12" y1="90" x2="348" y2="90" stroke="#cbd5e1"/>' +
+            '<text x="52" y="104" font-size="10" text-anchor="middle" fill="#475569">Sep</text>' +
+            '<text x="152" y="104" font-size="10" text-anchor="middle" fill="#475569">Oct</text>' +
+            '<text x="252" y="104" font-size="10" text-anchor="middle" fill="#475569">Nov</text>' +
+          '</svg></div>';
+      }
+      if (n === 5) {
+        return '<div class="vis-box">' +
+          '<div class="vis-title">5-PART PROMPT ARCHITECTURE</div>' +
+          '<div class="vis-flow"><span>1. Role</span> &rarr; <span>2. Context</span> &rarr; <span>3. Task</span> &rarr; <span>4. Constraints</span> &rarr; <span>5. Markdown (.md)</span></div>' +
+          '</div>';
+      }
+      if (n === 6) {
+        return '<div class="vis-box">' +
+          '<div class="vis-title">LOCAL CLIENT-SIDE RAG PIPELINE</div>' +
+          '<div class="vis-flow"><span>Markdown KB</span> &rarr; <span>Heading Chunker</span> &rarr; <span>BM25 + IDF Scorer</span> &rarr; <span>Threshold Gate</span></div>' +
+          '</div>';
+      }
+      if (n === 7) {
+        return '<div class="vis-box">' +
+          '<div class="vis-title">LIVE KNOWN vs. UNKNOWN VERIFICATION</div>' +
+          '<div class="vis-grid2">' +
+            '<div class="vis-pill" style="border-color:#6ee7b7;background:#ecfdf5"><strong style="color:#065f46">Known Query</strong><span>"How does SmartBudget work..." &rarr; Grounded FAQ Answer</span></div>' +
+            '<div class="vis-pill" style="border-color:#fcd34d;background:#fffbeb"><strong style="color:#b45309">Unknown Query</strong><span>"USD/PKR &amp; Bitcoin price?" &rarr; Honest Refusal</span></div>' +
+          '</div></div>';
+      }
+      if (n === 8) {
+        return '<div class="vis-box">' +
+          '<div class="vis-title">FREE AI WORKFLOW ALLOCATION</div>' +
+          '<div class="vis-grid2">' +
+            '<div class="vis-pill"><strong>ChatGPT + Claude</strong><span>Research, HTML &amp; BM25</span></div>' +
+            '<div class="vis-pill"><strong>Gemini + Speech</strong><span>Markdown KB, Proposal &amp; Audio</span></div>' +
+          '</div></div>';
+      }
+      if (n === 9) {
+        return '<div class="vis-box">' +
+          '<div class="vis-title">ZERO-AD SUSTAINABILITY MODEL</div>' +
+          '<div class="vis-grid3">' +
+            '<div class="vis-pill"><strong>Core App</strong><span>100% Free Forever</span></div>' +
+            '<div class="vis-pill"><strong>Pro Packs</strong><span>Optional Offline Add-Ons</span></div>' +
+            '<div class="vis-pill"><strong>Campus License</strong><span>University Workshops</span></div>' +
+          '</div></div>';
+      }
+      return '<div class="vis-box">' +
+        '<div class="vis-title">PRESENTATION DAY CHECKLIST (10 MIN MAX)</div>' +
+        '<div class="vis-flow"><span>0:00–3:30 Slides + Voice</span> &rarr; <span>3:30–6:30 Live SmartBudget.html</span> &rarr; <span>6:30–10:00 Q&amp;A</span></div>' +
+        '</div>';
+    }
+  
+
+    function render() {
+      const s = SLIDES[idx];
+      document.getElementById('slide-container').innerHTML =
+        '<div class="slide-head">' +
+          '<div class="slide-meta">SLIDE ' + s.slideNumber + ' OF ' + SLIDES.length + ' · ' + s.timeRange + '</div>' +
+          '<h1 class="slide-title">' + s.title + '</h1>' +
+          '<p class="slide-sub">' + s.subtitle + '</p>' +
+        '</div>' +
+        '<div class="slide-body">' +
+          '<ul class="bullets">' +
+            s.bullets.map((b, i) => '<li><span class="num">0' + (i + 1) + '</span><span>' + b + '</span></li>').join('') +
+          '</ul>' +
+          getSlideVisualHtml(s.slideNumber) +
+          '<div class="narration-box"><strong>Voiceover Script:</strong> ' + s.narration + '</div>' +
+        '</div>';
+
+      document.getElementById('slide-dots').innerHTML = SLIDES.map((sl, i) =>
+        '<button class="' + (i === idx ? 'active' : '') + '" onclick="goSlide(' + i + ')">' + sl.slideNumber + '</button>'
+      ).join('');
+      document.getElementById('btn-prev').disabled = idx === 0;
+      document.getElementById('btn-next').disabled = idx === SLIDES.length - 1;
+      document.getElementById('btn-play-all').textContent = playingAll ? 'Stop Auto-Narration' : 'Play Full Voiceover (All 10 Slides)';
+    }
+
+    function goSlide(n) {
+      if (n < 0 || n >= SLIDES.length) return;
+      idx = n;
+      render();
+      if (playingAll) speakSlideAt(idx);
+    }
+
+    function stopSpeech() {
+      playingAll = false;
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      const aud = document.getElementById('deck-audio');
+      if (aud) aud.pause();
+      render();
+    }
+
+    function speakCurrentSlide() {
+      playingAll = false;
+      speakSlideAt(idx);
+    }
+
+    function speakSlideAt(slideIndex) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const s = SLIDES[slideIndex];
+      const utter = new SpeechSynthesisUtterance(s.title + '. ' + s.narration);
+      utter.rate = currentRate;
+      utter.onend = () => {
+        if (playingAll && slideIndex + 1 < SLIDES.length) {
+          idx = slideIndex + 1;
+          render();
+          speakSlideAt(idx);
+        } else {
+          playingAll = false;
+          render();
+        }
+      };
+      window.speechSynthesis.speak(utter);
+    }
+
+    function togglePlayAll() {
+      const aud = document.getElementById('deck-audio');
+      if (aud) {
+        if (aud.paused) { aud.play(); } else { aud.pause(); }
+        return;
+      }
+      if (playingAll) {
+        stopSpeech();
+      } else {
+        playingAll = true;
+        render();
+        speakSlideAt(idx);
+      }
+    }
+
+    const audEl = document.getElementById('deck-audio');
+    if (audEl) {
+      audEl.addEventListener('timeupdate', () => {
+        const t = audEl.currentTime;
+        let targetIdx = 0;
+        for (let i = 0; i < SLIDES.length; i++) {
+          if (t >= SLIDES[i].startSeconds) targetIdx = i;
+        }
+        if (targetIdx !== idx) {
+          idx = targetIdx;
+          render();
+        }
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') goSlide(idx + 1);
+      if (e.key === 'ArrowLeft') goSlide(idx - 1);
+    });
+
+    render();
+  </script>
+</body>
+</html>
